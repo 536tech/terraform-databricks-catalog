@@ -40,3 +40,43 @@ run "without_access" {
     error_message = "Empty access must omit the access resources."
   }
 }
+
+run "reject_blank_name" {
+  command = plan
+  variables {
+    name = "  "
+  }
+  expect_failures = [var.name]
+}
+
+run "reject_blank_principal" {
+  command = plan
+  variables {
+    grants = [{ principal = " ", privileges = ["SELECT"] }]
+  }
+  expect_failures = [var.grants]
+}
+
+run "reject_empty_privileges" {
+  command = plan
+  variables {
+    grants = [{ principal = "readers", privileges = [] }]
+  }
+  expect_failures = [var.grants]
+}
+
+run "reject_duplicate_principal" {
+  command = plan
+  variables {
+    grants = [{ principal = "readers", privileges = ["SELECT"] }, { principal = "readers", privileges = ["MODIFY"] }]
+  }
+  expect_failures = [var.grants]
+}
+
+run "reject_isolation_mode" {
+  command = plan
+  variables {
+    isolation_mode = "INVALID"
+  }
+  expect_failures = [var.isolation_mode]
+}
