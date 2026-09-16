@@ -16,7 +16,7 @@ The resource addresses above are part of the DataTF import contract. Do not rena
 ```hcl
 module "catalog" {
   source  = "536tech/catalog/databricks"
-  version = "1.0.0"
+  version = "1.0.1"
 
   name           = "sales"
   isolation_mode = "ISOLATED"
@@ -62,6 +62,20 @@ The workspace pattern module checks the complete DataTF contract and its integra
 ## License
 
 [Apache-2.0](LICENSE).
+
+## Input safeguards
+
+The module rejects blank required names and invalid access inputs during the plan.
+Cross-input preconditions preserve the Terraform 1.5 minimum and existing resource addresses.
+Null remains valid for inputs where the provider supplies a default.
+Provider and API checks still apply. These checks do not prove complete permission visibility.
+
+Each grant needs one unique principal and at least one nonblank privilege.
+The module does not freeze the Unity Catalog privilege list; the provider and API check supported privileges.
+`databricks_grants` manages the complete direct grant set on the object.
+Preserve the caller's required grants and review the plan before apply.
+Empty grants omit the grant resource; they do not declare an empty authoritative grant set.
+See [provider grant semantics](https://github.com/databricks/terraform-provider-databricks/blob/v1.130.0/docs/resources/grants.md).
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
