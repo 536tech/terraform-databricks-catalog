@@ -67,6 +67,7 @@ The workspace pattern module checks the complete DataTF contract and its integra
 
 The module rejects blank required names and invalid access inputs during the plan.
 Cross-input preconditions preserve the Terraform 1.5 minimum and existing resource addresses.
+Null remains valid for inputs where the provider supplies a default.
 Provider and API checks still apply. These checks do not prove complete permission visibility.
 
 Each grant needs one unique principal and at least one nonblank privilege.

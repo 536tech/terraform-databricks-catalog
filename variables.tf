@@ -12,10 +12,9 @@ variable "name" {
 variable "isolation_mode" {
   description = "Catalog isolation mode: OPEN or ISOLATED."
   type        = string
-  nullable    = false
 
   validation {
-    condition     = contains(["OPEN", "ISOLATED"], var.isolation_mode)
+    condition     = var.isolation_mode == null ? true : contains(["OPEN", "ISOLATED"], var.isolation_mode)
     error_message = "isolation_mode must be OPEN or ISOLATED."
   }
 }
@@ -23,10 +22,9 @@ variable "isolation_mode" {
 variable "owner" {
   description = "Catalog owner. A user, group, or service principal."
   type        = string
-  nullable    = false
 
   validation {
-    condition     = try(length(trimspace(var.owner)) > 0, false)
+    condition     = var.owner == null ? true : try(length(trimspace(var.owner)) > 0, false)
     error_message = "owner must not be empty or blank."
   }
 }
